@@ -120,7 +120,7 @@
 
         queue()   // queue function loads all external data files asynchronously
             .defer(d3.json, "world-topo.json")  // our geometries
-            .defer(d3.csv, "countriesRandom.csv")  // and associated data in csv file
+            .defer(d3.csv, "meddle.csv")  // and associated data in csv file
             .await(processData);   // once all files are loaded, call the processData function passing
                                    // the loaded objects as arguments
     }
