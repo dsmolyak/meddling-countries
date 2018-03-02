@@ -65,10 +65,10 @@
 </div>
 
 
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="http://d3js.org/d3.geo.projection.v0.min.js"></script>
-<script src="http://d3js.org/queue.v1.min.js"></script>
-<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="https://d3js.org/d3.geo.projection.v0.min.js"></script>
+<script src="https://d3js.org/queue.v1.min.js"></script>
+<script src="https://d3js.org/topojson.v1.min.js"></script>
 <script>
     //globals
     var width, height, projection, path, graticule, svg, attributeArray = [], currentAttribute = 0, playing = false;
@@ -82,7 +82,7 @@
 
     function setMap() {
 
-        width = 960, height = 580;  // map width and height, matches
+        height = 580, width = 960;  // map width and height, matches
 
         projection = d3.geo.eckert5()   // define our projection with parameters
             .scale(170)
@@ -121,18 +121,26 @@
         queue()   // queue function loads all external data files asynchronously
             .defer(d3.json, "world-topo.json")  // our geometries
             .defer(d3.csv, "meddle.csv")  // and associated data in csv file
+            .defer(d3.csv, "country_codes.csv")
             .await(processData);   // once all files are loaded, call the processData function passing
                                    // the loaded objects as arguments
     }
 
-    function processData(error,world,countryData) {
+    function processData(error,world,countryData,countryCodes) {
         // function accepts any errors from the queue function as first argument, then
         // each data object in the order of chained defer() methods above
 
+        var country_id_3 = 'USA';
+        console.log(world);
         var countries = world.objects.countries.geometries;  // store the path in variable for ease
         for (var i in countries) {    // for each geometry object
             for (var j in countryData) {  // for each row in the CSV
-                if(countries[i].properties.id == countryData[j].id) {   // if they match
+                for (var v in countryCodes) {
+                    if (v['2code'] === countryData[j].id) {
+                        country_id_3 = v['3code'];
+                    }
+                }
+                if(countries[i].properties.id == country_id_3) {   // if they match
                     for(var k in countryData[i]) {   // for each column in the a row within the CSV
                         if(k != 'name' && k != 'id') {  // let's not add the name or id as props since we already have them
                             if(attributeArray.indexOf(k) == -1) {
