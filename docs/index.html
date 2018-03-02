@@ -53,6 +53,19 @@
         #clock {
             left: 65px;
         }
+        /* Style for Custom Tooltip */
+        div.tooltip {
+            position: absolute;
+            text-align: center;
+            width: 60px;
+            height: 28px;
+            padding: 2px;
+            font: 12px sans-serif;
+            background: white;
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
+        }
     </style>
 </head>
 
@@ -129,9 +142,8 @@
     function processData(error,world,countryData,countryCodes) {
         // function accepts any errors from the queue function as first argument, then
         // each data object in the order of chained defer() methods above
-        
+
         var countries = world.objects.countries.geometries;  // store the path in variable for ease
-        console.log(countryData[0].id);
         for (var i in countries) {    // for each geometry object
             for (var j in countryData) {  // for each row in the CSV
                 if (countries[i].properties.id == countryData[j].id) {   // if they match
@@ -153,12 +165,37 @@
 
     function drawMap(world) {
 
+        function generate_tooltip(d) {
+            return "<h4>"+d.admin+"</h4><table>"+
+                "<tr><td>Low</td><td>"+(d.low)+"</td></tr>"+
+                "<tr><td>Average</td><td>"+(d.avg)+"</td></tr>"+
+                "<tr><td>High</td><td>"+(d.high)+"</td></tr>"+
+                "</table>";
+        }
+
+        var div = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
         svg.selectAll(".country")   // select country objects (which don't exist yet)
             .data(topojson.feature(world, world.objects.countries).features)  // bind data to these non-existent objects
             .enter().append("path") // prepare data to be appended to paths
             .attr("class", "country") // give them a class for styling and access later
             .attr("id", function(d) { return "code_" + d.properties.id; }, true)  // give each a unique id for access later
-            .attr("d", path); // create them using the svg path generator defined above
+            .attr("d", path) // create them using the svg path generator defined above
+            .on("mouseover", function(d) {
+                div.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                div.html(d.properties.admin)
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+                })
+            .on("mouseout", function(d) {
+                div.transition()
+                    .duration(500)
+                    .style("opacity", 0);
+            });
 
         var dataRange = getDataRange(); // get the min/max values from the current year's range of data values
         d3.selectAll('.country')  // select all the countries
@@ -210,6 +247,7 @@
                     max = currentValue;
                 }
             });
+        max = .1806;
         return [min,max];  //boomsauce
     }
 
