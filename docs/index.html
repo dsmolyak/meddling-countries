@@ -163,7 +163,11 @@
         var dataRange = getDataRange(); // get the min/max values from the current year's range of data values
         d3.selectAll('.country')  // select all the countries
             .attr('fill-opacity', function(d) {
-                return getColor(d.properties[attributeArray[currentAttribute]], dataRange);  // give them an opacity value based on their current value
+		var colorAttribute = d.properties[attributeArray[currentAttribute]];
+		if (typeof colorAttribute == "undefined") {
+			colorAttribute = 0.0;
+		}
+                return getColor(colorAttribute, dataRange);  // give them an opacity value based on their current value
             });
     }
 
@@ -173,7 +177,11 @@
         d3.selectAll('.country').transition()  //select all the countries and prepare for a transition to new values
             .duration(750)  // give it a smooth time period for the transition
             .attr('fill-opacity', function(d) {
-                return getColor(d.properties[attributeArray[currentAttribute]], dataRange);  // the end color value
+		var colorAttribute = d.properties[attributeArray[currentAttribute]];
+		if (typeof colorAttribute == "undefined") {
+			colorAttribute = 0.0;
+		}
+                return getColor(colorAttribute, dataRange);  // the end color value
             })
 
     }
