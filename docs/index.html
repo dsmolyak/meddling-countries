@@ -129,18 +129,12 @@
     function processData(error,world,countryData,countryCodes) {
         // function accepts any errors from the queue function as first argument, then
         // each data object in the order of chained defer() methods above
-
-        var country_id_3 = 'USA';
-        console.log(world);
+        
         var countries = world.objects.countries.geometries;  // store the path in variable for ease
+        console.log(countryData[0].id);
         for (var i in countries) {    // for each geometry object
             for (var j in countryData) {  // for each row in the CSV
-                for (var v in countryCodes) {
-                    if (v['2code'] === countryData[j].id) {
-                        country_id_3 = v['3code'];
-                    }
-                }
-                if(countries[i].properties.id == country_id_3) {   // if they match
+                if (countries[i].properties.id == countryData[j].id) {   // if they match
                     for(var k in countryData[i]) {   // for each column in the a row within the CSV
                         if(k != 'name' && k != 'id') {  // let's not add the name or id as props since we already have them
                             if(attributeArray.indexOf(k) == -1) {
