@@ -5,10 +5,6 @@
     <title>MeddlingCountries</title>
     <script src="slider/nouislider.min.js"></script>
     <script src="countrymatrix.js"></script>
-    <script>
-        console.log("Meddle count");
-    console.log(countrymatrix[["ABW","AFR","2003"]]);
-    </script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -264,7 +260,6 @@
                         }
 
                         var value = hash[d.properties.id] === undefined ? 0 : parseInt(hash[d.properties.id]);
-                        console.log(value);
                         var percent = value / sum * 100;   
                     }
 
@@ -317,7 +312,6 @@
                     else {
                         var converted_string = convertListToFunkyString([clicked_country, parseInt(attributeArray[currentAttribute])]);
                         var hash = countrymatrix[converted_string];
-                        console.log(hash);
                         svg.selectAll(".country")
                             .attr('fill-opacity', function (d) {
                                 var colorAttribute = hash[d.properties.id];
@@ -402,15 +396,11 @@
         var min = Infinity, max = -Infinity;
         var key = convertListToFunkyString([countryCode, year]);
         var countriesMeddledWith = matrix[key];
-        console.log("countriesMeddledWith");
-        console.log(countriesMeddledWith);
         if (countriesMeddledWith === undefined) {
             return undefined;
         }
         for (var medeleeCountryCode of Object.keys(countriesMeddledWith)) {
             var numMeddles = parseInt(countriesMeddledWith[medeleeCountryCode]);
-            console.log("numMeddles");
-            console.log(numMeddles);
 
             if (numMeddles < min) {
                 min = numMeddles;
