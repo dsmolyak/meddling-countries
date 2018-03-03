@@ -1,12 +1,12 @@
 /* EXAMPLE CODE */
 $(function() {
     $("#year-slider .slider").noUiSlider({
-      start: 8,
+      start: 1979,
       step: 1,
       connect: "lower",
       range: {
-        'min': 0,
-        'max': 10
+        'min': 1979,
+        'max': 2018
       },
       serialization: {
         format: {
@@ -16,7 +16,11 @@ $(function() {
     });
     
     $('#year-slider .slider').on('change', function(){
+          console.log("Slider has changed");
           highlightLabel($(this).val());
+          currentAttribute = ($(this).val()) - 1979
+          sequenceMap();
+          d3.select('#clock').html(attributeArray[currentAttribute]);
       });
     
     $('#year-slider .slider').on('slide', function(){
