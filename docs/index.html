@@ -142,8 +142,6 @@
         out += theList[0];
         out += '", "';
         out += theList[1];
-        out += '", "';
-        out += theList[2];
         out += '"]';
         return out;
     }
@@ -257,7 +255,7 @@
                     .style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY - 28) + "px");
             })
-            .on("mouseout", function (d) {
+            .on("mouseout", function(d) {
                 div.transition()
                     .duration(500)
                     .style("opacity", 0);
@@ -287,18 +285,6 @@
                 }
                 return getColor(colorAttribute, dataRange);  // give them an opacity value based on their current value
             });
-
-
-        // d3.selectAll('.country')  // select all the countries
-        //     .style("fill", function (d) {
-        //         console.log(clicked_country);
-        //         if (d.properties.id === clicked_country) {
-        //             return "red"
-        //         }
-        //         else {
-        //             return "steelblue"
-        //         }
-        //     });
     }
 
     function sequenceMap() {
@@ -358,7 +344,7 @@
                         sequenceMap();  // update the representation of the map
                         d3.select('#clock').html(attributeArray[currentAttribute]);  // update the clock
 
-                    }, 2000);
+                    }, 1000);
 
                     d3.select(this).html('Stop');  // change the button label to stop
                     playing = true;   // change the status of the animation
