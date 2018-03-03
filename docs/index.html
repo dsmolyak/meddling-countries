@@ -264,13 +264,39 @@
                 if (is_clicked && d.properties.id === clicked_country) {
                     clicked_country = undefined;
                     is_clicked = false;
+                    dataRange = getDataRange();
                     d3.select(this).style("fill", "steelblue");
+                    svg.selectAll(".country")
+                        .attr('fill-opacity', function (d) {
+
+                            var colorAttribute = d.properties[attributeArray[currentAttribute]];
+                            if (typeof colorAttribute === "undefined") {
+                                colorAttribute = 0.0;
+                            }
+
+                            return getColor(colorAttribute, dataRange);  // give them an opacity value based on their current value
+                        });
                 }
                 else {
                     is_clicked = true;
-                    d3.select("#code_" + clicked_country).style("fill", "steelblue");
+                    if (clicked_country !== undefined) {
+                        d3.select("#code_" + clicked_country).style("fill", "steelblue");
+                    }
                     clicked_country = d.properties.id;
                     d3.select(this).style("fill", "red");
+                    var dataRange = getDataRangeForSingleActingCountry(clicked_country, parseInt(attributeArray[currentAttribute]), countrymatrix);
+                    var converted_string = convertListToFunkyString([clicked_country, parseInt(attributeArray[currentAttribute])]);
+                    var hash = countrymatrix[converted_string];
+                    svg.selectAll(".country")
+                        .attr('fill-opacity', function (d) {
+                            var colorAttribute = hash[d.properties.id];
+                            if (typeof colorAttribute === "undefined") {
+                                colorAttribute = 0.0;
+                            }
+                            var color_result = getColor(parseInt(colorAttribute), dataRange);
+                            console.log(color_result);
+                            return color_result  // give them an opacity value based on their current value
+                        });
                 }
 
 
@@ -335,10 +361,14 @@
 
         var min = Infinity, max = -Infinity;
         var key = convertListToFunkyString([countryCode, year]);
-        var countriesMeddledWith = matrix[key]
-        
+        var countriesMeddledWith = matrix[key];
+        console.log("countriesMeddledWith");
+        console.log(countriesMeddledWith);
         for (var medeleeCountryCode of Object.keys(countriesMeddledWith)) {
             var numMeddles = parseInt(countriesMeddledWith[medeleeCountryCode]);
+            console.log("numMeddles");
+            console.log(numMeddles);
+
             if (numMeddles < min) {
                 min = numMeddles;
             } else if (numMeddles > max) {
