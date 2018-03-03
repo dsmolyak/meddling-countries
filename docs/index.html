@@ -166,6 +166,7 @@
     function drawMap(world) {
 
         function generate_tooltip(d) {
+            // var result =
             return "<h4>"+d.admin+"</h4><table>"+
                 "<tr><td>Low</td><td>"+(d.low)+"</td></tr>"+
                 "<tr><td>Average</td><td>"+(d.avg)+"</td></tr>"+
@@ -247,7 +248,6 @@
                     max = currentValue;
                 }
             });
-        max = .647;
         return [min,max];  //boomsauce
     }
 
