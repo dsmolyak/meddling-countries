@@ -60,12 +60,12 @@
         div.tooltip {
             position: absolute;
             text-align: center;
-            width: 60px;
-            height: 28px;
+            width: auto;
+            height: auto;
             padding: 2px;
             font: 12px sans-serif;
             background: white;
-            border: 0px;
+            border: 1px solid gray;
             border-radius: 8px;
             pointer-events: none;
         }
@@ -119,7 +119,8 @@
 
     function setMap() {
 
-        height = 580, width = 960;  // map width and height, matches
+        height = 580;
+        width = 960;  // map width and height, matches
 
         projection = d3.geo.eckert5()   // define our projection with parameters
             .scale(170)
@@ -187,17 +188,14 @@
         drawMap(world);  // let's mug the map now with our newly populated data object
     }
 
+    function generate_tooltip(d) {
+        var year= attributeArray[currentAttribute];
+        return "<p><b>"+(d.properties.admin)+"</b></p><table align='center'>"+
+            "<tr><td>" + year + "</td><td>"+ d.properties[year] +"</td></tr>"+
+            "</table>";
+    }
+
     function drawMap(world) {
-
-        function generate_tooltip(d) {
-            // var result =
-            return "<h4>"+d.admin+"</h4><table>"+
-                "<tr><td>Low</td><td>"+(d.low)+"</td></tr>"+
-                "<tr><td>Average</td><td>"+(d.avg)+"</td></tr>"+
-                "<tr><td>High</td><td>"+(d.high)+"</td></tr>"+
-                "</table>";
-        }
-
         var div = d3.select("body").append("div")
             .attr("class", "tooltip")
             .style("opacity", 0);
@@ -212,7 +210,7 @@
                 div.transition()
                     .duration(200)
                     .style("opacity", .9);
-                div.html(d.properties.admin)
+                div.html(generate_tooltip(d))
                     .style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY - 28) + "px");
                 })
@@ -226,9 +224,9 @@
         d3.selectAll('.country')  // select all the countries
             .attr('fill-opacity', function(d) {
 		var colorAttribute = d.properties[attributeArray[currentAttribute]];
-		    if (typeof colorAttribute == "undefined") {
-			    colorAttribute = 0.0;
-		    }
+		if (typeof colorAttribute === "undefined") {
+			colorAttribute = 0.0;
+		}
                 return getColor(colorAttribute, dataRange);  // give them an opacity value based on their current value
             });
     }
@@ -240,9 +238,9 @@
             .duration(750)  // give it a smooth time period for the transition
             .attr('fill-opacity', function(d) {
 		var colorAttribute = d.properties[attributeArray[currentAttribute]];
-		    if (typeof colorAttribute == "undefined") {
-			    colorAttribute = 0.0;
-		    }
+		if (typeof colorAttribute === "undefined") {
+			colorAttribute = 0.0;
+		}
                 return getColor(colorAttribute, dataRange);  // the end color value
             })
 
@@ -289,6 +287,7 @@
                         }
                         sequenceMap();  // update the representation of the map
                         d3.select('#clock').html(attributeArray[currentAttribute]);  // update the clock
+                        console.log(attributeArray[currentAttribute]);
                     }, 2000);
 
                     d3.select(this).html('stop');  // change the button label to stop
