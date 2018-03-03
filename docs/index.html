@@ -313,18 +313,20 @@
     function sequenceMap() {
         // get the min/max values from the current year's range of data values
 
+
         var dataRange = is_clicked ? getDataRangeForSingleActingCountry(clicked_country, parseInt(attributeArray[currentAttribute]), countrymatrix) : getDataRange();
-        var converted_string = convertListToFunkyString([clicked_country, parseInt(attributeArray[currentAttribute])]);
-        var hash = countrymatrix[converted_string];
-        d3.selectAll('.country').transition()  //select all the countries and prepare for a transition to new values
+        var hash = undefined;
+        if (is_clicked) {
+            var hash = countrymatrix[convertListToFunkyString([clicked_country, parseInt(attributeArray[currentAttribute])])];
+        }
+        d3.selectAll('.country').transition()  // select all the countries and prepare for a transition to new values
             .duration(750)  // give it a smooth time period for the transition
             .attr('fill-opacity', function (d) {
                 var colorAttribute = is_clicked ? hash[d.properties.id] : d.properties[attributeArray[currentAttribute]];
                 if (typeof colorAttribute === "undefined") {
                     colorAttribute = 0.0;
                 }
-                return getColor(parseInt(colorAttribute), dataRange);  // give them an opacity value based on their current value
-
+                return is_clicked ? getColor(parseInt(colorAttribute), dataRange) : getColor(colorAttribute, dataRange);  // give them an opacity value based on their current value
             })
 
     }
