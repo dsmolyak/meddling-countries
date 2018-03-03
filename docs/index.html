@@ -3,6 +3,9 @@
 <head>
     <meta charset="utf-8">
     <title>d3 choropleth map</title>
+    <script src="slider/nouislider.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
     <style>
         #wrapper {
             width: 960px;
@@ -67,6 +70,7 @@
             pointer-events: none;
         }
     </style>
+    <link rel="stylesheet" href="slider/slider.css">
 </head>
 
 <body>
@@ -77,6 +81,26 @@
     <span id="clock">year</span>
 </div>
 
+<div class="well">
+    <h2>Year</h2>
+    <hr>
+    <div id="year-slider" class="no-ui-slider">
+        <div class="slider"></div>
+        <ul class="slider-labels eleven-columns">
+            <li>0</li>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li class="active">8</li>
+            <li>9</li>
+            <li>10</li>
+        </ul>
+    </div>
+</div>
 
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script src="https://d3js.org/d3.geo.projection.v0.min.js"></script>
@@ -281,5 +305,6 @@
     window.onload = init();  // magic starts here
 
 </script>
+<script src="slider/slider.js"></script>
 </body>
 </html>
