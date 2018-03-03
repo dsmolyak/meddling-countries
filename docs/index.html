@@ -148,7 +148,7 @@
         return out;
     }
     //globals
-    var width, height, projection, path, graticule, svg, attributeArray = [], currentAttribute = 0, playing = false;
+    var width, height, projection, path, graticule, svg, attributeArray = [], currentAttribute = 0, playing = false, clicked_country = undefined, is_clicked;
 
     function init() {
 
@@ -256,22 +256,49 @@
                 div.html(generate_tooltip(d))
                     .style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY - 28) + "px");
-                })
-            .on("mouseout", function(d) {
+            })
+            .on("mouseout", function (d) {
                 div.transition()
                     .duration(500)
                     .style("opacity", 0);
+            })
+            .on("click", function (d) {
+                if (is_clicked && d.properties.id === clicked_country) {
+                    clicked_country = undefined;
+                    is_clicked = false;
+                    d3.select(this).style("fill", "steelblue");
+                }
+                else {
+                    is_clicked = true;
+                    d3.select("#code_" + clicked_country).style("fill", "steelblue");
+                    clicked_country = d.properties.id;
+                    d3.select(this).style("fill", "red");
+                }
+
+
             });
 
         var dataRange = getDataRange(); // get the min/max values from the current year's range of data values
         d3.selectAll('.country')  // select all the countries
-            .attr('fill-opacity', function(d) {
-		var colorAttribute = d.properties[attributeArray[currentAttribute]];
-		if (typeof colorAttribute === "undefined") {
-			colorAttribute = 0.0;
-		}
+            .attr('fill-opacity', function (d) {
+                var colorAttribute = d.properties[attributeArray[currentAttribute]];
+                if (typeof colorAttribute === "undefined") {
+                    colorAttribute = 0.0;
+                }
                 return getColor(colorAttribute, dataRange);  // give them an opacity value based on their current value
             });
+
+
+        // d3.selectAll('.country')  // select all the countries
+        //     .style("fill", function (d) {
+        //         console.log(clicked_country);
+        //         if (d.properties.id === clicked_country) {
+        //             return "red"
+        //         }
+        //         else {
+        //             return "steelblue"
+        //         }
+        //     });
     }
 
     function sequenceMap() {
@@ -330,7 +357,6 @@
                         }
                         sequenceMap();  // update the representation of the map
                         d3.select('#clock').html(attributeArray[currentAttribute]);  // update the clock
-                        console.log(attributeArray[currentAttribute]);
 
                     }, 2000);
 
