@@ -310,18 +310,24 @@
                     clicked_country = d.properties.id;
                     d3.select(this).style("fill", "red");
                     var dataRange = getDataRangeForSingleActingCountry(clicked_country, parseInt(attributeArray[currentAttribute]), countrymatrix);
-                    var converted_string = convertListToFunkyString([clicked_country, parseInt(attributeArray[currentAttribute])]);
-                    var hash = countrymatrix[converted_string];
-                    svg.selectAll(".country")
-                        .attr('fill-opacity', function (d) {
-                            var colorAttribute = hash[d.properties.id];
-                            if (typeof colorAttribute === "undefined") {
-                                colorAttribute = 0.0;
-                            }
-                            return getColor(parseInt(colorAttribute), dataRange);  // give them an opacity value based on their current value
-                        });
+                    if (dataRange === undefined) {
+                        svg.selectAll(".country")
+                            .attr('fill-opacity', .3)
+                    }
+                    else {
+                        var converted_string = convertListToFunkyString([clicked_country, parseInt(attributeArray[currentAttribute])]);
+                        var hash = countrymatrix[converted_string];
+                        console.log(hash);
+                        svg.selectAll(".country")
+                            .attr('fill-opacity', function (d) {
+                                var colorAttribute = hash[d.properties.id];
+                                if (typeof colorAttribute === "undefined") {
+                                    colorAttribute = 0.0;
+                                }
+                                return getColor(parseInt(colorAttribute), dataRange);  // give them an opacity value based on their current value
+                            });
+                    }
                 }
-
 
             });
 
@@ -341,6 +347,11 @@
 
 
         var dataRange = is_clicked ? getDataRangeForSingleActingCountry(clicked_country, parseInt(attributeArray[currentAttribute]), countrymatrix) : getDataRange();
+        if (dataRange === undefined) {
+            svg.selectAll(".country")
+                .attr('fill-opacity', .3)
+            return
+        }
         var hash = undefined;
         if (is_clicked) {
             var hash = countrymatrix[convertListToFunkyString([clicked_country, parseInt(attributeArray[currentAttribute])])];
@@ -393,6 +404,9 @@
         var countriesMeddledWith = matrix[key];
         console.log("countriesMeddledWith");
         console.log(countriesMeddledWith);
+        if (countriesMeddledWith === undefined) {
+            return undefined;
+        }
         for (var medeleeCountryCode of Object.keys(countriesMeddledWith)) {
             var numMeddles = parseInt(countriesMeddledWith[medeleeCountryCode]);
             console.log("numMeddles");
