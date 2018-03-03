@@ -267,9 +267,9 @@
         d3.selectAll('.country')  // select all the countries
             .attr('fill-opacity', function(d) {
 		var colorAttribute = d.properties[attributeArray[currentAttribute]];
-		if (typeof colorAttribute === "undefined") {
-			colorAttribute = 0.0;
-		}
+		    if (typeof colorAttribute === "undefined") {
+			    colorAttribute = 0.0;
+		    }
                 return getColor(colorAttribute, dataRange);  // give them an opacity value based on their current value
             });
     }
@@ -281,9 +281,9 @@
             .duration(750)  // give it a smooth time period for the transition
             .attr('fill-opacity', function(d) {
 		var colorAttribute = d.properties[attributeArray[currentAttribute]];
-		if (typeof colorAttribute === "undefined") {
-			colorAttribute = 0.0;
-		}
+		    if (typeof colorAttribute === "undefined") {
+			    colorAttribute = 0.0;
+		    }
                 return getColor(colorAttribute, dataRange);  // the end color value
             })
 
