@@ -254,16 +254,19 @@
                 if (is_clicked && clicked_country !== d.properties.id){
                     var converted_string = convertListToFunkyString([clicked_country, parseInt(attributeArray[currentAttribute])]);
                     var hash = countrymatrix[converted_string];
-                    var sum = 0;
-
-                    for (var meddlee of Object.keys(hash)){
-                        sum += parseInt(hash[meddlee]);
-                    }
-
                     var year = attributeArray[currentAttribute];
-                    var value = hash[d.properties.id] === undefined ? 0 : parseInt(hash[d.properties.id]);
-                    console.log(value);
-                    var percent = value / sum * 100;
+                    var percent = 0;
+                    if (hash !== undefined){
+                        var sum = 0;
+
+                        for (var meddlee of Object.keys(hash)){
+                            sum += parseInt(hash[meddlee]);
+                        }
+
+                        var value = hash[d.properties.id] === undefined ? 0 : parseInt(hash[d.properties.id]);
+                        console.log(value);
+                        var percent = value / sum * 100;   
+                    }
 
                     var val = "<p><b>"+(d.properties.admin)+"</b></p><table align='center'>"+
                         "<tr><td>" + year + ": </td><td>"+ percent.toFixed(2) +"%</td></tr>"+
