@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>d3 choropleth map</title>
+    <title>MeddlingCountries</title>
     <script src="slider/nouislider.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
@@ -48,12 +48,18 @@
             fill: steelblue;
             stroke: white;
         }
+        #title {
+            margin: auto;
+            padding-bottom: 30px;
+        }
         #play, #clock {
-            position: absolute;
-            top: 15px;
+            /*position: relative;*/
+            /*margin-left: auto;*/
+            margin-bottom: 30px;
         }
         #play {
-            left: 15px;
+            margin-left: auto;
+            /*left: 15px;*/
         }
         #clock {
             left: 75px;
@@ -62,6 +68,7 @@
             line-height: 37px;
             text-align: center;
             border: 1px solid black;
+            margin-right: auto;
         }
         /* Style for Custom Tooltip */
         div.tooltip {
@@ -82,22 +89,33 @@
 
 <body>
 
-<div id="wrapper">
-    <div id="map"></div>
-    <button class="btn btn-primary" id="play">play</button>
-    <span id="clock" class="panel panel-default">year</span>
+
+<div id="wrapper" class="container">
+    <div class="row">
+        <h1 id="title">Meddling Countries</h1>
+    </div>
+    <div class="row">
+        <button class="btn btn-primary" id="play">Play</button>
+        <span id="clock" class="panel panel-default">year</span>
+    </div>
+    <div class="row well">
+        <h2></h2>
+        <hr>
+        <div id="year-slider" class="no-ui-slider">
+            <div class="slider"></div>
+            <ul class="slider-labels eleven-columns" id="slider-numbers">
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div id="map"></div>
+    </div>
+
 </div>
 
-<div class="well">
-    <h2>Year</h2>
-    <hr>
-    <div id="year-slider" class="no-ui-slider">
-        <div class="slider"></div>
-        <ul class="slider-labels eleven-columns" id="slider-numbers">
-           
-        </ul>
-    </div>
-</div>
+
+
+
 <script>
     for(var i = 1979; i<= 2018; i++){
         if(i == 1979 || i == 2018) {
@@ -297,11 +315,11 @@
 
                     }, 2000);
 
-                    d3.select(this).html('stop');  // change the button label to stop
+                    d3.select(this).html('Stop');  // change the button label to stop
                     playing = true;   // change the status of the animation
                 } else {    // else if is currently playing
                     clearInterval(timer);   // stop the animation by clearing the interval
-                    d3.select(this).html('play');   // change the button label to play
+                    d3.select(this).html('Play');   // change the button label to play
                     playing = false;   // change the status again
                 }
             });
