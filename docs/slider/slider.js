@@ -14,7 +14,7 @@ $(function() {
         }
       }
     });
-    
+
     $('#year-slider .slider').on('change', function(){
           console.log("Slider has changed");
           highlightLabel($(this).val());
@@ -22,11 +22,21 @@ $(function() {
           sequenceMap();
           d3.select('#clock').html(attributeArray[currentAttribute]);
       });
-    
-    $('#year-slider .slider').on('slide', function(){
-      highlightLabel($(this).val());
+
+    $("body").on('DOMSubtreeModified', "#clock", function() {
+        console.log("year has changed");
+        $('#year-slider .slider').val(currentAttribute+1979);
     });
     
+    $('#year-slider .slider').on('slide', function(){
+          highlightLabel($(this).val());
+          console.log("Slider has changed");
+          highlightLabel($(this).val());
+          currentAttribute = ($(this).val()) - 1979
+          sequenceMap();
+          d3.select('#clock').html(attributeArray[currentAttribute]);
+    });
+
     $("#year-slider .slider-labels").on("click", "li", function() { 
       $('#year-slider .slider').val($(this).index());
       highlightLabel($(this).index());
@@ -41,7 +51,7 @@ $(function() {
     
   });
   /* END EXAMPLE CODE */
-  
+
   
   /*
   
