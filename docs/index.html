@@ -261,7 +261,8 @@
                     }
 
                     var year = attributeArray[currentAttribute];
-                    var value = d.properties[year] === undefined ? 0 : d.properties[year];
+                    var value = hash[clicked_country] === "undefined" ? 0 : hash[clicked_country];
+                    var percentage = value / sum * 100;
 
                     var val = "<p><b>"+(d.properties.admin)+"</b></p><table align='center'>"+
                         "<tr><td>" + year + ": </td><td>"+ percent.toFixed(2) +"%</td></tr>"+
