@@ -329,6 +329,26 @@
         return [min,max];  //boomsauce
     }
 
+    function getDataRangeForSingleActingCountry(countryCode, year, matrix) {
+        // function loops through all the data values for the selected country
+        // and returns the min and max values
+
+        var min = Infinity, max = -Infinity;
+        var key = convertListToFunkyString([countryCode, year]);
+        var countriesMeddledWith = matrix[key]
+        
+        for (var medeleeCountryCode of Object.keys(countriesMeddledWith)) {
+            var numMeddles = parseInt(countriesMeddledWith[medeleeCountryCode]);
+            if (numMeddles < min) {
+                min = numMeddles;
+            } else if (numMeddles > max) {
+                max = numMeddles;
+            }
+        }
+
+        return [min,max];  //boomsauce
+    }
+
     function animateMap() {
 
         var timer;  // create timer object
